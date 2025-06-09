@@ -6,7 +6,7 @@ function scrapeEasyJetPrice($origin, $destination, $date) {
 
     // ლოგავ კონტეინერში ფაილში
     file_put_contents("debug_output.txt", $output);
-    file_put_contents("debug_output.txt", shell_exec("which node"));
+    
     if ($output === null) {
         return ["error" => "shell_exec returned null"];
     }

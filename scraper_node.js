@@ -41,3 +41,4 @@ async function scrape(origin, destination, date) {
 
 const [,, origin, destination, date] = process.argv;
 scrape(origin, destination, date);
+console.log("Scraper started");

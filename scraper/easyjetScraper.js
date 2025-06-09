@@ -1,8 +1,6 @@
 const puppeteer = require("puppeteer");
 
-const [,, origin, destination, date] = process.argv;
-
-(async () => {
+async function scrapeEasyJetPrice(originCity, destinationCity, departureDate) {
   const browser = await puppeteer.launch({
     headless: "new",
     args: ["--no-sandbox", "--disable-setuid-sandbox"]
@@ -16,11 +14,11 @@ const [,, origin, destination, date] = process.argv;
       await page.click('#ensCloseBanner', { timeout: 3000 });
     } catch {}
 
-    await page.type("#originStation", origin);
+    await page.type("#originStation", originCity);
     await page.keyboard.press("Enter");
     await page.waitForTimeout(1000);
 
-    await page.type("#destinationStation", destination);
+    await page.type("#destinationStation", destinationCity);
     await page.keyboard.press("Enter");
     await page.waitForTimeout(1000);
 
@@ -36,10 +34,12 @@ const [,, origin, destination, date] = process.argv;
       return { departureTime: time, price };
     });
 
-    console.log(JSON.stringify(result));
     await browser.close();
+    return result;
   } catch (err) {
-    console.log(JSON.stringify({ error: err.message }));
     await browser.close();
+    return { error: err.message };
   }
-})();
+}
+
+module.exports = { scrapeEasyJetPrice };
